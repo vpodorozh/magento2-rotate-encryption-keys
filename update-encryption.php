@@ -98,6 +98,8 @@ if (isset($params['key']) && $params['key'])
 if ($command == 'scan') {
     $encryptedFields = [];
     $tablesToExclude = ["%^catalog%", "%amasty_xsearch_users_search%", "%url_rewrite%", "%amasty_merchandiser_product_index_eav_replica%"];
+    // fix issue with cutted GROUP_CONCAT results
+    $db->query("SET SESSION group_concat_max_len = 10000000");
     $tables = $db->query("SHOW TABLES")->fetchAll();
     $f = fopen($params['output'], 'w');
     fputcsv($f, ['table', 'id_field', 'id value', 'path', 'field', 'value', 'decrypted', 're-encrypted']);
